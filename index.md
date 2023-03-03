@@ -1,7 +1,7 @@
 # Comp-Sci Demos 2023
 
 ## Demos
-- [Moving Rectangle]
+- [Moving Rectangle](00-moving-rectangle)
 
 
 ## Projects
