@@ -6,7 +6,6 @@
 // - describe what you did to take this project "above and beyond"
 
 let pins = [];
-let mouseOnPin = false;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -22,17 +21,10 @@ function draw() {
   }
 }
 
-function movePin(currentPin) { 
-  if (!mouseOnPin) {
-    if (mouseX > currentPin.x - 50 && mouseX < currentPin.x + 50 && mouseY > currentPin.y - 50 && mouseY < currentPin.y + 50 && mouseIsPressed) {
-      mouseOnPin = true;
-    }
-  } 
-  else {
-    if (mouseIsPressed) {
-      currentPin.x = mouseX;
-      currentPin.y = mouseY;
-    }
+function movePin(currentPin, mouseOnPin) { 
+  if (mouseX > currentPin.x - 50 && mouseX < currentPin.x + 50 && mouseY > currentPin.y - 50 && mouseY < currentPin.y + 50 && mouseIsPressed) {
+    currentPin.x = mouseX;
+    currentPin.y = mouseY;
   }
 }
 
