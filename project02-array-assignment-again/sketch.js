@@ -3,29 +3,36 @@
 // March 15th, 2023
 //
 // Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// drawing and moving in 3D
 
 let rings = [];
 let globalX = 0;
 let globalY = 0;
+let globalZ = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   normalMaterial();
-  spawnRing(50, 0, 100);
-  spawnRing(0, 100, 0)
+  //spawn the initial 5 rings
+  spawnRing(random(-100, 100), random(-100, 100), 400);
+  spawnRing(random(-100, 100), random(-100, 100), 0);
+  spawnRing(random(-100, 100), random(-100, 100), -400);
+  spawnRing(random(-100, 100), random(-100, 100), -800);
+  spawnRing(random(-100, 100), random(-100, 100), -1200);
 }
 
 function draw() {
   background(220);
   playerInput();
+  moveRings();
   for(let i = 0; i < rings.length; i++) {
-    moveRings(rings[i]);
-    drawRings();
+    positionRings(rings[i]);
   }
+  addRings();
 }
 
 function playerInput(){
+  // lets the player move the X and Y
   if (keyIsDown(LEFT_ARROW)) {
     globalX += 3;
   }
@@ -40,19 +47,29 @@ function playerInput(){
   }
 }
 
-function moveRings(ring) {
-  ring.z += 2;
-  let x = globalX + ring.x;
-  let y = globalY + ring.y;
-  translate(x, y, ring.z);
+function moveRings() {
+  // the speed of rings moving twoards the screen
+  globalZ += 5;
 }
 
-function drawRings() {
-  
+function positionRings(ring) {
+  // translates the position for each ring
+  push();
+  translate(globalX + ring.x, globalY + ring.y, globalZ + ring.z);
   torus (100, 20, 50, 50);
+  pop();
+}
+
+function addRings() {
+  //adds news rings and removes them once they are past the screen
+  if (globalZ + rings[0].z > 800) {
+    rings.shift()
+    spawnRing(random(-100, 100), random(-100, 100), rings[rings.length - 1].z - 400)
+  }
 }
 
 function spawnRing(ringX, ringY, ringZ) {
+  // spawns a new ring with x y and z. x and y are randomized when called, z is 400 more than the last
   let someRing = {
     x: ringX,
     y: ringY,
