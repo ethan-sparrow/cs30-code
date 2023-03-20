@@ -13,12 +13,17 @@ let globalZ = 0;
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   normalMaterial();
-  //spawn the initial 5 rings
-  spawnRing(random(-100, 100), random(-100, 100), 400);
-  spawnRing(random(-100, 100), random(-100, 100), 0);
-  spawnRing(random(-100, 100), random(-100, 100), -400);
-  spawnRing(random(-100, 100), random(-100, 100), -800);
-  spawnRing(random(-100, 100), random(-100, 100), -1200);
+  //spawn the initial rings
+  spawnRing(random(-200, 200), random(-200, 200), -400);
+  spawnRing(random(-200, 200), random(-200, 200), -800);
+  spawnRing(random(-200, 200), random(-200, 200), -1200);
+  spawnRing(random(-200, 200), random(-200, 200), -1600);
+  spawnRing(random(-200, 200), random(-200, 200), -2000);
+  spawnRing(random(-200, 200), random(-200, 200), -2400);
+  spawnRing(random(-200, 200), random(-200, 200), -2800);
+  spawnRing(random(-200, 200), random(-200, 200), -3200);
+  spawnRing(random(-200, 200), random(-200, 200), -3600);
+  spawnRing(random(-200, 200), random(-200, 200), -4000);
 }
 
 function draw() {
@@ -32,7 +37,7 @@ function draw() {
 }
 
 function playerInput(){
-  // lets the player move the X and Y
+  // lets the player move the X and Y using arrow keys
   if (keyIsDown(LEFT_ARROW)) {
     globalX += 3;
   }
@@ -63,8 +68,8 @@ function positionRings(ring) {
 function addRings() {
   //adds news rings and removes them once they are past the screen
   if (globalZ + rings[0].z > 800) {
-    rings.shift()
-    spawnRing(random(-100, 100), random(-100, 100), rings[rings.length - 1].z - 400)
+    rings.shift();
+    spawnRing(random(-100, 100), random(-100, 100), rings[rings.length - 1].z - 400);
   }
 }
 

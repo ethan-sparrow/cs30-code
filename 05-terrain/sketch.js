@@ -38,7 +38,7 @@ function spawnRectangles() {
     let thisRect = {
       x: x,
       height: terrainHeight,
-    }
+    };
     terrain.push(thisRect);
     time += 0.003;
   }

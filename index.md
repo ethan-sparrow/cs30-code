@@ -6,7 +6,8 @@
 - [Bouncing Balls](03-bouncing-balls)
 - [Cubic Dissarray](04-cubic-dissarray)
 - [Terrain Generation](05-terrain)
+- [2D grid] (06-2d-grid)
 
 ## Projects
-- [Arrays and Object Notation (FAIL VERSION)](project01-array-assignment)
-- [Arrays and Object Notation (GOOD VERSION)](project02-array-assignment-again)
+- [Arrays and Object Notation (SCRAPPED)](project01-array-assignment)
+- [Arrays and Object Notation (FINAL)](project02-array-assignment-again)
