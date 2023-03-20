@@ -9,4 +9,4 @@
 
 ## Projects
 - [Arrays and Object Notation (FAIL VERSION)](project01-array-assignment)
-- [Arrays and Object Notation (complete good version)] (project02-array-assignment-again)
+- [Arrays and Object Notation (GOOD VERSION)](project02-array-assignment-again)
