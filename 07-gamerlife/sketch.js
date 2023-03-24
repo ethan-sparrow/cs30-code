@@ -5,10 +5,11 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-const ROWS = 10;
-const COLS = 10;
+const ROWS = 40;
+const COLS = 40;
 let grid;
 let cellSize;
+let autoUpdate = true;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -25,6 +26,9 @@ function setup() {
 
 function draw() {
   background(220);
+  if (autoUpdate && frameCount % 10 === 0) {
+    grid = updateGrid();
+  }
   displayGrid(grid);
 }
 
@@ -37,6 +41,9 @@ function keyTyped() {
   }
   if ( key === " ") {
     grid = updateGrid();
+  }
+  else if (key === "a") {
+    autoUpdate = !autoUpdate;
   }
 }
 
@@ -85,6 +92,7 @@ function updateGrid() {
       }
     }
   }
+  return nextGen;
 }
 
 function toggleCell(x, y) {
