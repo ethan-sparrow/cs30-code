@@ -6,10 +6,10 @@
 - [Bouncing Balls](03-bouncing-balls)
 - [Cubic Dissarray](04-cubic-dissarray)
 - [Terrain Generation](05-terrain)
-- [2Dgrid] (06-2d-grid)
-- [Gamerlife] (07-gamerlife) 
+- [2D grid](06-2d-grid)
+- [Gamer life](07-gamerlife) 
 
 ## Pro Jets
 - [Arrays and Object Notation (SCRAPPED)](project01-array-assignment)
 - [Arrays and Object Notation (FINAL)](project02-array-assignment-again)
-- []
+- [2d Arrays](project03-2d-array-assignment) 
