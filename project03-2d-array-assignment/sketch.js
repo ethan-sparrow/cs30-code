@@ -9,8 +9,8 @@ const ROWS = 30;
 const COLS = 30;
 let grid;
 let cellSize;
-let dy = 0;
-let dx = 0;
+let movingY = 0;
+let movingX = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -50,22 +50,32 @@ function keyboardInput() {
   
 
   //player movement
-  if ( keyIsDown === "w") {
-    dy = -1;
+  if ( key === "w"  && keyIsPressed) {
+    movingY = -1;
+  } 
+  else if (key === "s" && keyIsPressed) {
+    movingY = 1;
   }
   else {
-    dy = 0;
+    movingY = 0;
   }
 }
 
 function moveThings(grid) {
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
-      if (grid[y][x] === 2) {
-        if (dy !== 0) {
-          // make it remeber what it was (properties?)
+      if (grid[y][x] === 2 && movingY !== 0 && frameCount % 5 === 0) {
+        if (grid[y + movingY][x] === 0) {
           grid[y][x] = 0;
+          grid[y + movingY][x] = 102;
         }
+      }
+    }
+  }
+  for (let y = 0; y < ROWS; y++) {
+    for (let x = 0; x < COLS; x++) {
+      if (grid[y][x] === 102) {
+        grid[y][x] = 2;
       }
     }
   }
