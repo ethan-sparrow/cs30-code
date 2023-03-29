@@ -12,6 +12,7 @@ let cellSize;
 let movingY = 0;
 let movingX = 0;
 
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   grid = createEmpty2dArray(ROWS, COLS);
@@ -36,27 +37,27 @@ function keyboardInput() {
   let x = Math.floor(mouseX/cellSize);
   let y = Math.floor(mouseY/cellSize);
   if ( key === "e" && keyIsPressed) {
-    grid[y][x] = "empty";
+    grid[y][x].bottomLayer = "ground";
+    grid[y][x].topLayer = "empty"; 
   }
   if (mouseIsPressed) {
-    grid[y][x] = "wall";
+    grid[y][x].bottomLayer = "wall";
   }
   if ( key === "p" && keyIsPressed) {
-    grid[y][x] = "player";
+    grid[y][x].topLayer = "player";
   }
   if ( key === "b" && keyIsPressed) {
-    grid[y][x] = "box";
+    grid[y][x].topLayer = "box";
   }
   if ( key === "v" && keyIsPressed) {
-    grid[y][x] = "verticalRail";
+    grid[y][x].bottomLayer = "verticalRail";
   }
   if ( key === "h" && keyIsPressed) {
-    grid[y][x] = "horizontalRail";
+    grid[y][x].bottomLayer = "horizontalRail";
   }
   if (key === "r" && keyIsPressed) {
     grid = createEmpty2dArray(ROWS, COLS);
   }
-  
 
   //player movement
   if ( key === "w"  && keyIsPressed) {
@@ -83,26 +84,42 @@ function keyboardInput() {
 function moveThings(grid) {
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
-      if (grid[y][x] === "player" && frameCount % 5 === 0) {
+      if (grid[y][x].topLayer === "player" && frameCount % 5 === 0) {
         if (movingY !== 0 || movingX !== 0) {
-          if (grid[y + movingY][x + movingX] === "empty") {
-            grid[y][x] = "toBeEmpty";
-            grid[y + movingY][x + movingX] = "toBePlayer";
+
+          //YOU WERE HERE
+          if (grid[y][x].onRail === "up") {
+            if (grid[y-1])
           }
-          if (grid[y + movingY][x + movingX] === "box") {
-            if (grid[y + movingY * 2][x + movingX * 2] === "empty") {
-              grid[y][x] = "toBeEmpty";
-              grid[y + movingY][x + movingX] = "toBePlayer";
-              grid[y + movingY * 2][x + movingX * 2] = "toBeBox";
+
+
+          if (grid[y + movingY][x + movingX].bottomLayer === "verticalRail") {
+            grid[y][x].topLayer = "toBeEmpty";
+            grid[y + movingY][x + movingX].topLayer = "toBePlayer";
+            if (movingY === -1) {
+              grid[y][x].onRail = "toBeUp";
+            }
+            if (movingY === 1) {
+              grid[y][x].onRail = "down";
+            }
+          }
+          if (grid[y + movingY][x + movingX].topLayer === "box") {
+            if (grid[y + movingY * 2][x + movingX * 2].bottomLayer === "ground") {
+              grid[y][x].topLayer = "toBeEmpty";
+              grid[y + movingY][x + movingX].topLayer = "toBePlayer";
+              grid[y + movingY * 2][x + movingX * 2].topLayer = "toBeBox";
             }
             else {
               return;
             }
             
           }
-          if (grid[y + movingY][x + movingX] === "verticalRail") {
-            grid[y][x] = "toBeEmpty";
-            grid[y + movingY][x + movingX] = 106;
+          if (grid[y + movingY][x + movingX].bottomLayer === "ground") {
+            grid[y][x].topLayer = "toBeEmpty";
+            grid[y + movingY][x + movingX].topLayer = "toBePlayer";
+          }
+          if (grid[y + movingY][x + movingX].bottomLayer === "verticalRail") {
+            grid[y + movingY][x + movingX].topLayer = "toBePlayer";
           }
         }
       }
@@ -111,14 +128,18 @@ function moveThings(grid) {
   }
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
-      if (grid[y][x] === "toBeEmpty") {
-        grid[y][x] = "empty";
+      if (grid[y][x].topLayer === "toBePlayer") {
+        grid[y][x].topLayer = "player";
       }
-      if (grid[y][x] === "toBePlayer") {
-        grid[y][x] = "player";
+      if (grid[y][x].topLayer === "toBeBox") {
+        grid[y][x].topLayer = "box";
       }
-      if (grid[y][x] === "toBeBox") {
-        grid[y][x] = "box";
+      if (grid[y][x].topLayer === "toBeEmpty") {
+        grid[y][x].topLayer = "empty";
+      }
+
+      if (grid[y][x].onRail === "toBeUp") {
+        grid[y][x].onRail = "up";
       }
     }
   }
@@ -127,35 +148,23 @@ function moveThings(grid) {
 function displayGrid(grid) {
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
-      if (grid[y][x] === "empty") {
+      if (grid[y][x].bottomLayer === "ground") {
         fill("pink");
       }
-      if (grid[y][x] === "wall") {
+      if (grid[y][x].bottomLayer === "wall") {
         fill("purple");
       }
-      if (grid[y][x] === "player") {
-        fill("grey");
-      }
-      if (grid[y][x] === "box") {
-        fill("blue");
-      }
-      if (grid[y][x] === "verticalRail") {
+      if (grid[y][x].bottomLayer === "verticalRail") {
         fill("yellow");
       }
-      if (grid[y][x] === "horizontalRail") {
+      if (grid[y][x].bottomLayer === "horizontalRail") {
         fill("orange");
       }
-      if (grid[y][x] === "upBird") {
+      if (grid[y][x].topLayer === "player") {
         fill("grey");
       }
-      if (grid[y][x] === "downBird") {
-        fill("grey");
-      }
-      if (grid[y][x] === "leftBird") {
-        fill("grey");
-      }
-      if (grid[y][x] === "rightBird") {
-        fill("grey");
+      if (grid[y][x].topLayer === "box") {
+        fill("blue");
       }
       rect(x*cellSize, y*cellSize, cellSize, cellSize);
     }
@@ -163,11 +172,17 @@ function displayGrid(grid) {
 }
 
 function createEmpty2dArray(ROWS, COLS) {
+  
   let newGrid = [];
   for (let y = 0; y < ROWS; y++) {
     newGrid.push([]);
     for (let x = 0; x < COLS; x++) {
-      newGrid[y].push("empty");
+      let emptyCell = {
+        bottomLayer: "ground",
+        topLayer: "empty",
+        onRail: "no",
+      };
+      newGrid[y].push(emptyCell);
     }
   }
   return newGrid;
