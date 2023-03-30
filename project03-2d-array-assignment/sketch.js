@@ -41,7 +41,7 @@ function keyboardInput() {
     grid[y][x].topLayer = "empty"; 
   }
   if (mouseIsPressed) {
-    grid[y][x].topLayer = "wall";
+    grid[y][x].bottomLayer = "wall";
   }
   if ( key === "p" && keyIsPressed) {
     grid[y][x].topLayer = "player";
@@ -49,11 +49,8 @@ function keyboardInput() {
   if ( key === "b" && keyIsPressed) {
     grid[y][x].topLayer = "box";
   }
-  if ( key === "v" && keyIsPressed) {
-    grid[y][x].bottomLayer = "verticalRail";
-  }
   if ( key === "h" && keyIsPressed) {
-    grid[y][x].bottomLayer = "horizontalRail";
+    grid[y][x].topLayer = "hole";
   }
   if (key === "r" && keyIsPressed) {
     grid = createEmpty2dArray(ROWS, COLS);
@@ -87,49 +84,27 @@ function moveThings(grid) {
       if (grid[y][x].topLayer === "player" && frameCount % 5 === 0) {
         if (movingY !== 0 || movingX !== 0) {
 
-          //YOU WERE HERE
-          if (grid[y][x].onRail === "up") {
-            if (grid[y-1][x].topLayer === "wall" || grid[y-1][x].topLayer === "box" && grid[y-2][x].topLayer === "wall") {
-              grid[y][x].topLayer = "empty";
-              grid[y][x].onRail = "false";
-              grid[y + 1][x].topLayer = "toBePlayer";
-              grid[y + 1][x].onRail = "tobeDown";
+          if (grid[y + movingY][x + movingX].topLayer === "box") {
+            if (grid[y + movingY * 2][x + movingX * 2].bottomLayer === "ground") {
+              grid[y][x].toBe = "toBeEmpty";
+              grid[y + movingY][x + movingX].toBe = "toBePlayer";
+              grid[y + movingY * 2][x + movingX * 2].toBe = "toBeBox";
             }
-            if (grid[y-1][x].bottomLayer === "ground") {
-              grid[y][x].topLayer = "empty";
-              grid[y][x].onRail = "false";
-              grid[y - 1][x].topLayer = "toBePlayer";
-              grid[y - 1][x].onRail = "tobeDown";
+            else {
+              return;
             }
-          }
-
-          else {
-            if (grid[y + movingY][x + movingX].bottomLayer === "verticalRail") {
-              grid[y][x].topLayer = "toBeEmpty";
-              grid[y + movingY][x + movingX].topLayer = "toBePlayer";
-              if (movingY === -1) {
-                grid[y][x].onRail = "toBeUp";
-              }
-              if (movingY === 1) {
-                grid[y][x].onRail = "tobeDown";
-              }
-            }
-            if (grid[y + movingY][x + movingX].topLayer === "box") {
-              if (grid[y + movingY * 2][x + movingX * 2].bottomLayer === "ground") {
-                grid[y][x].topLayer = "toBeEmpty";
-                grid[y + movingY][x + movingX].topLayer = "toBePlayer";
-                grid[y + movingY * 2][x + movingX * 2].topLayer = "toBeBox";
-              }
-              else {
-                return;
-              }
               
-            }
-            if (grid[y + movingY][x + movingX].topLayer === "empty" && grid[y + movingY][x + movingX].bottomLayer === "ground") {
-              grid[y][x].topLayer = "toBeEmpty";
-              grid[y + movingY][x + movingX].topLayer = "toBePlayer";
-            }
           }
+          
+          if (grid[y + movingY][x + movingX].bottomLayer === "ground") {
+            if (grid[y - movingY][x - movingX].topLayer !== "player") {
+              grid[y][x].toBe = "toBeEmpty";
+            }
+            grid[y + movingY][x + movingX].toBe = "toBePlayer";
+            
+            
+          }
+          
         }
       }
       
@@ -137,21 +112,14 @@ function moveThings(grid) {
   }
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
-      if (grid[y][x].topLayer === "toBePlayer") {
+      if (grid[y][x].toBe === "toBePlayer") {
         grid[y][x].topLayer = "player";
       }
-      if (grid[y][x].topLayer === "toBeBox") {
+      if (grid[y][x].toBe === "toBeBox") {
         grid[y][x].topLayer = "box";
       }
-      if (grid[y][x].topLayer === "toBeEmpty") {
+      if (grid[y][x].toBe === "toBeEmpty") {
         grid[y][x].topLayer = "empty";
-      }
-
-      if (grid[y][x].onRail === "toBeUp") {
-        grid[y][x].onRail = "up";
-      }
-      if (grid[y][x].onRail === "toBeDown") {
-        grid[y][x].onRail = "down";
       }
     }
   }
@@ -163,13 +131,10 @@ function displayGrid(grid) {
       if (grid[y][x].bottomLayer === "ground") {
         fill("pink");
       }
-      if (grid[y][x].bottomLayer === "verticalRail") {
-        fill("yellow");
+      if (grid[y][x].bottomLayer === "hole") {
+        fill("black");
       }
-      if (grid[y][x].bottomLayer === "horizontalRail") {
-        fill("orange");
-      }
-      if (grid[y][x].topLayer === "wall") {
+      if (grid[y][x].bottomLayer === "wall") {
         fill("purple");
       }
       if (grid[y][x].topLayer === "player") {
@@ -192,7 +157,7 @@ function createEmpty2dArray(ROWS, COLS) {
       let emptyCell = {
         bottomLayer: "ground",
         topLayer: "empty",
-        onRail: "false",
+        toBe: "none",
       };
       newGrid[y].push(emptyCell);
     }
