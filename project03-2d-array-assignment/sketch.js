@@ -41,7 +41,7 @@ function keyboardInput() {
     grid[y][x].topLayer = "empty"; 
   }
   if (mouseIsPressed) {
-    grid[y][x].bottomLayer = "wall";
+    grid[y][x].topLayer = "wall";
   }
   if ( key === "p" && keyIsPressed) {
     grid[y][x].topLayer = "player";
@@ -89,37 +89,46 @@ function moveThings(grid) {
 
           //YOU WERE HERE
           if (grid[y][x].onRail === "up") {
-            if (grid[y-1])
+            if (grid[y-1][x].topLayer === "wall" || grid[y-1][x].topLayer === "box" && grid[y-2][x].topLayer === "wall") {
+              grid[y][x].topLayer = "empty";
+              grid[y][x].onRail = "false";
+              grid[y + 1][x].topLayer = "toBePlayer";
+              grid[y + 1][x].onRail = "tobeDown";
+            }
+            if (grid[y-1][x].bottomLayer === "ground") {
+              grid[y][x].topLayer = "empty";
+              grid[y][x].onRail = "false";
+              grid[y - 1][x].topLayer = "toBePlayer";
+              grid[y - 1][x].onRail = "tobeDown";
+            }
           }
 
-
-          if (grid[y + movingY][x + movingX].bottomLayer === "verticalRail") {
-            grid[y][x].topLayer = "toBeEmpty";
-            grid[y + movingY][x + movingX].topLayer = "toBePlayer";
-            if (movingY === -1) {
-              grid[y][x].onRail = "toBeUp";
-            }
-            if (movingY === 1) {
-              grid[y][x].onRail = "down";
-            }
-          }
-          if (grid[y + movingY][x + movingX].topLayer === "box") {
-            if (grid[y + movingY * 2][x + movingX * 2].bottomLayer === "ground") {
+          else {
+            if (grid[y + movingY][x + movingX].bottomLayer === "verticalRail") {
               grid[y][x].topLayer = "toBeEmpty";
               grid[y + movingY][x + movingX].topLayer = "toBePlayer";
-              grid[y + movingY * 2][x + movingX * 2].topLayer = "toBeBox";
+              if (movingY === -1) {
+                grid[y][x].onRail = "toBeUp";
+              }
+              if (movingY === 1) {
+                grid[y][x].onRail = "tobeDown";
+              }
             }
-            else {
-              return;
+            if (grid[y + movingY][x + movingX].topLayer === "box") {
+              if (grid[y + movingY * 2][x + movingX * 2].bottomLayer === "ground") {
+                grid[y][x].topLayer = "toBeEmpty";
+                grid[y + movingY][x + movingX].topLayer = "toBePlayer";
+                grid[y + movingY * 2][x + movingX * 2].topLayer = "toBeBox";
+              }
+              else {
+                return;
+              }
+              
             }
-            
-          }
-          if (grid[y + movingY][x + movingX].bottomLayer === "ground") {
-            grid[y][x].topLayer = "toBeEmpty";
-            grid[y + movingY][x + movingX].topLayer = "toBePlayer";
-          }
-          if (grid[y + movingY][x + movingX].bottomLayer === "verticalRail") {
-            grid[y + movingY][x + movingX].topLayer = "toBePlayer";
+            if (grid[y + movingY][x + movingX].topLayer === "empty" && grid[y + movingY][x + movingX].bottomLayer === "ground") {
+              grid[y][x].topLayer = "toBeEmpty";
+              grid[y + movingY][x + movingX].topLayer = "toBePlayer";
+            }
           }
         }
       }
@@ -141,6 +150,9 @@ function moveThings(grid) {
       if (grid[y][x].onRail === "toBeUp") {
         grid[y][x].onRail = "up";
       }
+      if (grid[y][x].onRail === "toBeDown") {
+        grid[y][x].onRail = "down";
+      }
     }
   }
 }
@@ -151,14 +163,14 @@ function displayGrid(grid) {
       if (grid[y][x].bottomLayer === "ground") {
         fill("pink");
       }
-      if (grid[y][x].bottomLayer === "wall") {
-        fill("purple");
-      }
       if (grid[y][x].bottomLayer === "verticalRail") {
         fill("yellow");
       }
       if (grid[y][x].bottomLayer === "horizontalRail") {
         fill("orange");
+      }
+      if (grid[y][x].topLayer === "wall") {
+        fill("purple");
       }
       if (grid[y][x].topLayer === "player") {
         fill("grey");
@@ -180,7 +192,7 @@ function createEmpty2dArray(ROWS, COLS) {
       let emptyCell = {
         bottomLayer: "ground",
         topLayer: "empty",
-        onRail: "no",
+        onRail: "false",
       };
       newGrid[y].push(emptyCell);
     }
