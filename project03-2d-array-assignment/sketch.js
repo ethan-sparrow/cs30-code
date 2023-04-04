@@ -50,7 +50,7 @@ function keyboardInput() {
     grid[y][x].topLayer = "box";
   }
   if ( key === "h" && keyIsPressed) {
-    grid[y][x].topLayer = "hole";
+    grid[y][x].bottomLayer = "hole";
   }
   if (key === "r" && keyIsPressed) {
     grid = createEmpty2dArray(ROWS, COLS);
@@ -79,36 +79,44 @@ function keyboardInput() {
 }
 
 function moveThings(grid) {
+  
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
       if (grid[y][x].topLayer === "player" && frameCount % 5 === 0 && (movingY !== 0 || movingX !== 0)) {
-        
-        if (grid[y + movingY][x + movingX].topLayer !== "wall") {
+        if (grid[y + movingY][x + movingX].topLayer !== "wall" && grid[y + movingY][x + movingX].topLayer !== "player") {
           if (grid[y + movingY][x + movingX].topLayer === "box" && grid[y + movingY * 2][x + movingX * 2].topLayer === "empty") {
             if (grid[y][x].toBe === "none"){
               grid[y][x].toBe = "toBeEmpty";
             }
             grid[y + movingY][x + movingX].toBe = "toBePlayer";
-            grid[y + movingY * 2][x + movingX * 2].toBe = "toBeBox";
-          }
-          if (grid[y + movingY][x + movingX].topLayer === "player" && grid[y + movingY * 2][x + movingX * 2].topLayer === "empty") {
-            if (grid[y][x].toBe === "none"){
-              grid[y][x].toBe = "toBeEmpty";
+            if (grid[y + movingY * 2][x + movingX * 2].bottomLayer === "ground") {
+              grid[y + movingY * 2][x + movingX * 2].toBe = "toBeBox";
             }
-            grid[y + movingY][x + movingX].toBe = "toBePlayer";
-            grid[y + movingY * 2][x + movingX * 2].toBe = "toBePlayer";
+            if (grid[y + movingY * 2][x + movingX * 2].bottomLayer === "hole") {
+              grid[y + movingY * 2][x + movingX * 2].toBe = "toBeGround";
+            }
           }
+          
+          
           if (grid[y + movingY][x + movingX].bottomLayer === "ground" && grid[y + movingY][x + movingX].topLayer === "empty") {
             if (grid[y][x].toBe === "none"){
               grid[y][x].toBe = "toBeEmpty";
             }
             grid[y + movingY][x + movingX].toBe = "toBePlayer";
           }
+          if (grid[y + movingY][x + movingX].bottomLayer === "hole") {
+            if (grid[y][x].toBe === "none"){
+              grid[y][x].toBe = "toBeEmpty";
+            }
+            grid[y + movingY][x + movingX].toBe = "toBeGround";
+          }
         }
         
       }
+      
     }
   }
+  let remainingHoles = 0;
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
       if (grid[y][x].toBe === "toBePlayer") {
@@ -123,7 +131,18 @@ function moveThings(grid) {
         grid[y][x].topLayer = "empty";
         grid[y][x].toBe = "none";
       }
+      if (grid[y][x].toBe === "toBeGround") {
+        grid[y][x].bottomLayer = "ground";
+        grid[y][x].toBe = "none";
+      }
+      
+      if (grid[y][x].bottomLayer === "hole") {
+        remainingHoles++;
+      }
     }
+  }
+  if (remainingHoles === 0) {
+    //end the level
   }
 }
 
