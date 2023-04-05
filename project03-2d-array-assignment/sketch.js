@@ -1,6 +1,6 @@
-// Project Title
-// Your Name
-// Date
+// Sokubon demo
+// Ethan Sparrow Kimble
+// April 5th, 2023
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
@@ -11,7 +11,7 @@ let grid;
 let cellSize;
 let movingY = 0;
 let movingX = 0;
-
+let level = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -26,7 +26,6 @@ function setup() {
 }
 
 function draw() {
-  background(220);
   keyboardInput();
   moveThings(grid);
   displayGrid(grid);
@@ -79,11 +78,14 @@ function keyboardInput() {
 }
 
 function moveThings(grid) {
-  
+  //determine where everything moves using temporary variables
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
+      //player movement, framecount restriction because otherwise theyd move too fast
       if (grid[y][x].topLayer === "player" && frameCount % 5 === 0 && (movingY !== 0 || movingX !== 0)) {
         if (grid[y + movingY][x + movingX].topLayer !== "wall" && grid[y + movingY][x + movingX].topLayer !== "player") {
+
+          //box pushing movement
           if (grid[y + movingY][x + movingX].topLayer === "box" && grid[y + movingY * 2][x + movingX * 2].topLayer === "empty") {
             if (grid[y][x].toBe === "none"){
               grid[y][x].toBe = "toBeEmpty";
@@ -97,7 +99,7 @@ function moveThings(grid) {
             }
           }
           
-          
+          //empty space movemnt
           if (grid[y + movingY][x + movingX].bottomLayer === "ground" && grid[y + movingY][x + movingX].topLayer === "empty") {
             if (grid[y][x].toBe === "none"){
               grid[y][x].toBe = "toBeEmpty";
@@ -111,12 +113,12 @@ function moveThings(grid) {
             grid[y + movingY][x + movingX].toBe = "toBeGround";
           }
         }
-        
       }
-      
     }
   }
   let remainingHoles = 0;
+
+  //changes temorary variables to real ones
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
       if (grid[y][x].toBe === "toBePlayer") {
@@ -136,6 +138,7 @@ function moveThings(grid) {
         grid[y][x].toBe = "none";
       }
       
+      //tracks the holes left in the level and finishes the level when its done
       if (grid[y][x].bottomLayer === "hole") {
         remainingHoles++;
       }
@@ -147,6 +150,7 @@ function moveThings(grid) {
 }
 
 function displayGrid(grid) {
+  //colours every cell
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
       if (grid[y][x].bottomLayer === "ground") {
@@ -170,6 +174,7 @@ function displayGrid(grid) {
 }
 
 function createEmpty2dArray(ROWS, COLS) {
+  //leftover / used for level creation
   
   let newGrid = [];
   for (let y = 0; y < ROWS; y++) {
@@ -184,4 +189,24 @@ function createEmpty2dArray(ROWS, COLS) {
     }
   }
   return newGrid;
+}
+
+function loadLevel(level) {
+  //loads the next level
+  if (level === 0) {
+    //load level 0
+  }
+  if (level === 1) {
+    //load level 1
+  }
+  if (level === 2) {
+    //load level 2
+  }
+  if (level === 3) {
+    //load level 3
+  }
+  if (level === 4) {
+    //load level 4
+  }
+  //use as many times as needed
 }
