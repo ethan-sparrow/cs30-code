@@ -5,11 +5,12 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-const ROWS = 40;
-const COLS = 40;
+const ROWS = 10;
+const COLS = 10;
 let grid;
 let cellSize;
 let autoUpdate = true;
+let scribble = new Scribble();
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -116,7 +117,7 @@ function displayGrid(grid) {
       if (grid[y][x] === 1) {
         fill("blue");
       }
-      rect(x*cellSize, y*cellSize, cellSize, cellSize);
+      scribble.scribbleRect(x*cellSize, y*cellSize, cellSize, cellSize);
     }
   }
 }
