@@ -11,11 +11,18 @@ let grid;
 let cellSize;
 let movingY = 0;
 let movingX = 0;
-let level = 0;
+let currentLevel = 0;
+let levels = [];
+let levelMaking = false;
+
+function preload() {
+  levels.push(loadJSON("level0.json"));
+  levels.push(loadJSON("level1.json"));
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  grid = createEmpty2dArray(ROWS, COLS);
+  loadLevel();
 
   if (width < height) {
     cellSize = width/COLS;
@@ -35,27 +42,35 @@ function keyboardInput() {
   //for editing purposes
   let x = Math.floor(mouseX/cellSize);
   let y = Math.floor(mouseY/cellSize);
-  if ( key === "e" && keyIsPressed) {
-    grid[y][x].bottomLayer = "ground";
-    grid[y][x].topLayer = "empty"; 
+  if (key === "`" && keyIsPressed) {
+    levelMaking = true;
   }
-  if (mouseIsPressed) {
-    grid[y][x].topLayer = "wall";
+  
+  if (levelMaking) {
+    if ( key === "e" && keyIsPressed) {
+      grid[y][x].bottomLayer = "ground";
+      grid[y][x].topLayer = "empty"; 
+    }
+    if (mouseIsPressed) {
+      grid[y][x].topLayer = "wall";
+    }
+    if ( key === "p" && keyIsPressed) {
+      grid[y][x].topLayer = "player";
+    }
+    if ( key === "b" && keyIsPressed) {
+      grid[y][x].topLayer = "box";
+    }
+    if ( key === "h" && keyIsPressed) {
+      grid[y][x].bottomLayer = "hole";
+    }
   }
-  if ( key === "p" && keyIsPressed) {
-    grid[y][x].topLayer = "player";
-  }
-  if ( key === "b" && keyIsPressed) {
-    grid[y][x].topLayer = "box";
-  }
-  if ( key === "h" && keyIsPressed) {
-    grid[y][x].bottomLayer = "hole";
-  }
+  
+  
+  //player input
   if (key === "r" && keyIsPressed) {
-    grid = createEmpty2dArray(ROWS, COLS);
+    loadLevel();
   }
 
-  //player movement
   if ( key === "w"  && keyIsPressed) {
     movingY = -1;
   } 
@@ -144,8 +159,9 @@ function moveThings(grid) {
       }
     }
   }
-  if (remainingHoles === 0) {
-    //end the level
+  if (remainingHoles === 0 && !levelMaking) {
+    //currentLevel++;
+    loadLevel();
   }
 }
 
@@ -191,24 +207,9 @@ function createEmpty2dArray(ROWS, COLS) {
   return newGrid;
 }
 
-function loadLevel(level) {
+function loadLevel() {
   //loads the next level
-  if (level === 0) {
-    //load level 0
-  }
-  if (level === 1) {
-    //load level 1
-  }
-  if (level === 2) {
-    //load level 2
-  }
-  if (level === 3) {
-    //load level 3
-  }
-  if (level === 4) {
-    //load level 4
-  }
-  //use as many times as needed
+  grid = levels[currentLevel];
 }
 
 function keyPressed() {
