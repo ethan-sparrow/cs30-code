@@ -210,3 +210,9 @@ function loadLevel(level) {
   }
   //use as many times as needed
 }
+
+function keyPressed() {
+  if (key === ".") {
+    saveJSON(grid, "level");
+  }
+}
