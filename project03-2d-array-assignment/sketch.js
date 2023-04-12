@@ -67,9 +67,7 @@ function keyboardInput() {
   
   
   //player input
-  if (key === "r" && keyIsPressed) {
-    loadLevel();
-  }
+  
 
   if ( key === "w"  && keyIsPressed) {
     movingY = -1;
@@ -159,8 +157,8 @@ function moveThings(grid) {
       }
     }
   }
-  if (remainingHoles === 0 && !levelMaking) {
-    //currentLevel++;
+  if (remainingHoles === 0 && levelMaking === false) {
+    currentLevel++;
     loadLevel();
   }
 }
@@ -207,13 +205,14 @@ function createEmpty2dArray(ROWS, COLS) {
   return newGrid;
 }
 
-function loadLevel() {
-  //loads the next level
-  grid = levels[currentLevel];
-}
-
 function keyPressed() {
   if (key === ".") {
     saveJSON(grid, "level");
   }
 }
+
+function loadLevel() {
+  //loads the next level
+  grid = levels[currentLevel];
+}
+
