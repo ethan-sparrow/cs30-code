@@ -3,7 +3,7 @@
 // April 5th, 2023
 //
 // Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// made a movemnt system that supports multipule characters moving at once, made way to change levels once goal is complete
 
 const ROWS = 30;
 const COLS = 30;
@@ -18,6 +18,14 @@ let levelMaking = false;
 function preload() {
   levels.push(loadJSON("level0.json"));
   levels.push(loadJSON("level1.json"));
+  levels.push(loadJSON("level2.json"));
+  levels.push(loadJSON("level3.json"));
+  levels.push(loadJSON("level4.json"));
+  levels.push(loadJSON("level5.json"));
+  levels.push(loadJSON("level6.json"));
+  levels.push(loadJSON("level7.json"));
+  levels.push(loadJSON("level8.json"));
+  levels.push(loadJSON("level9.json"));
 }
 
 function setup() {
@@ -206,8 +214,51 @@ function createEmpty2dArray(ROWS, COLS) {
 }
 
 function keyPressed() {
+  //used to save levels ive made
   if (key === ".") {
     saveJSON(grid, "level");
+  }
+
+  // used to move between levels quickly
+  if (key === "0") {
+    currentLevel = 0;
+    loadLevel();
+  }
+  if (key === "1") {
+    currentLevel = 1;
+    loadLevel();
+  }
+  if (key === "2") {
+    currentLevel = 2;
+    loadLevel();
+  }
+  if (key === "3") {
+    currentLevel = 3;
+    loadLevel();
+  }
+  if (key === "4") {
+    currentLevel = 4;
+    loadLevel();
+  }
+  if (key === "5") {
+    currentLevel = 5;
+    loadLevel();
+  }
+  if (key === "6") {
+    currentLevel = 6;
+    loadLevel();
+  }
+  if (key === "7") {
+    currentLevel = 7;
+    loadLevel();
+  }
+  if (key === "8") {
+    currentLevel = 8;
+    loadLevel();
+  }
+  if (key === "9") {
+    currentLevel = 9;
+    loadLevel();
   }
 }
 
