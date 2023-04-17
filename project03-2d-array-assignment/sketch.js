@@ -3,7 +3,7 @@
 // April 5th, 2023
 //
 // Extra for Experts:
-// made a movemnt system that supports multipule characters moving at once, made way to change levels once goal is complete
+// made a movement system that supports multipule characters moving at once, made way to change levels once goal is complete
 
 const ROWS = 30;
 const COLS = 30;
