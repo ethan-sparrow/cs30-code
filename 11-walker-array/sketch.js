@@ -1,10 +1,10 @@
 // OOP walker
 
 class Walker {
-  constructor(x, y, color) {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.color = color;
+    this.color = (random(255), random(255), random(255));
     this.speed = 5;
     this.size = 5;
   }
@@ -38,21 +38,22 @@ class Walker {
 
 }
 
-let kevin;
-let wasi;
+let walkerArray = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  kevin = new Walker(100, 100, "red");
-  wasi = new Walker(300, 300, "blue");
+  let newWalker = new Walker(100, 100);
+  walkerArray.push(newWalker);
 }
 
 function draw() {
+  for (let i = 0; i<walkerArray.length; i++) {
+    walkerArray[i].move();
+    walkerArray[i].display();
+  }
+}
 
-  kevin.move();
-  wasi.move();
-  
-  kevin.display();
-  wasi.display();
-
+function mousePressed() {
+  let newWalker = new Walker(mouseX, mouseY);
+  walkerArray.push(newWalker);
 }
