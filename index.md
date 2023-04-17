@@ -8,6 +8,9 @@
 - [Terrain Generation](05-terrain)
 - [2D grid](06-2d-grid)
 - [Gamer life](07-gamerlife) 
+- [Character](08-character-grid)
+- [Scribble](09-scribble)
+- [Walker (OOP)](10-walker)
 
 ## Pro Jets
 - [Arrays and Object Notation (SCRAPPED)](project01-array-assignment)
