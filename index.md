@@ -12,6 +12,7 @@
 - [Scribble](09-scribble)
 - [Walker (OOP)](10-walker)
 - [Walker Array (OOP)](11-walker-array)
+- [Fireworks (OOP)](12-fireworks)
 
 ## Pro Jets
 - [Arrays and Object Notation (SCRAPPED)](project01-array-assignment)
