@@ -14,6 +14,7 @@
 - [Walker Array (OOP)](11-walker-array)
 - [Fireworks (OOP)](12-fireworks)
 - [Fractal Circles](13-fractal-circles)
+- [Sierpinski Triangle](14-sierpinski)
 
 ## Pro Jets
 - [Arrays and Object Notation (SCRAPPED)](project01-array-assignment)
